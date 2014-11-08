@@ -16,18 +16,19 @@ public:
     // Constructor
     Tcp_client(int port_number,char* hostname);
     // Connect Method used to make client connect with server
-    void connect();
+    void connect_to_server();
     // Send method used to send data to server
     void send(void *data);
     // Receive method used to receive data from server
     void* receive();
     // close method used to close open connection with server
-    void close();
+    void close_connection();
+    // deconstructor
     virtual ~Tcp_client();
 protected:
 
 private:
- int sockfb , portnum , n ;
+ int sockfd , portnum , check ;
  struct sockaddr_in serv_addr;
  struct hostent *server;
 };
