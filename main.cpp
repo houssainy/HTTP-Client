@@ -5,11 +5,11 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    /*if(argc < 3) {
+    if(argc < 3) {
         cout << "Missing arguments!" << endl;
         exit(EXIT_FAILURE);
-    }*/
-    int portNum = 8080;
+    }
+    int portNum = atoi(argv[2]);
     Tcp_client tcp_client(portNum, "localhost");
     tcp_client.connect_to_server();
     cout << "Connected to "<< argv[1] << " on port " << argv[2] << endl;
