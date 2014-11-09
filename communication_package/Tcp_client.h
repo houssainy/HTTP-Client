@@ -18,17 +18,17 @@ public:
     // Connect Method used to make client connect with server
     void connect_to_server();
     // Send method used to send data to server
-    void send(void *data);
+    void send(const void* buf, int length);
     // Receive method used to receive data from server
     void* receive();
     // close method used to close open connection with server
     void close_connection();
-    // deconstructor
+    // destructor
     virtual ~Tcp_client();
 protected:
 
 private:
- int sockfd , portnum , check ;
+ int sockfd, portnum;
  struct sockaddr_in serv_addr;
  struct hostent *server;
 };
