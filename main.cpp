@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
     int portNum = atoi(argv[2]);
-    Tcp_client tcp_client(portNum, "localhost");
+    Tcp_client tcp_client(portNum, argv[1]);
     tcp_client.connect_to_server();
     cout << "Connected to "<< argv[1] << " on port " << argv[2] << endl;
     char msg[] = "Hello From client!";
