@@ -47,7 +47,7 @@ void Tcp_client::send(const void* buf, int length){
 }
 
 void* Tcp_client::receive(){
-    char buffer[256];
+    unsigned char buffer[256];
     bzero(buffer, 256);
     int n = read(sockfd, buffer, 255);
     if (n < 0) {
