@@ -9,6 +9,7 @@
 #include <iostream>
 
 using namespace std;
+
 Tcp_client::Tcp_client(int port_number, char* hostname){
     this->portnum = port_number ;
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -41,24 +42,57 @@ void Tcp_client::connect_to_server(){
 }
 
 void Tcp_client::send(const void* buf, int length){
-    int n = write(sockfd, buf, length);
+    // Send size of data
+    char data_size[4];
+    int arraySize = length;
+    // convert arraySize to byte array
+    for (int i = 0; i < 4; i++) {
+        data_size[i] = (char) (arraySize & 0xff);
+        arraySize >>= 8;
+    }
+    int n = write(sockfd, data_size, 4);
     if (n < 0)
-        printf("can't write in socket");
+        cout << "Error while sending data!" << endl;
+    // Send data
+    n = write(sockfd, buf, length);
+    if (n < 0)
+        cout << "Error while sending data!" << endl;
 }
 
-void* Tcp_client::receive(){
-    unsigned char buffer[256];
-    bzero(buffer, 256);
-    int n = read(sockfd, buffer, 255);
-    if (n < 0) {
-        printf("can't read in socket");
+char* Tcp_client::receive(){
+    // Receive size
+    char temp[4];
+
+    int n = read(sockfd, temp, 4);
+    if (n < 0)
+        cout << "ERROR in reading from data!" << endl;
+
+	// convert received size from byte array to integer
+    int data_lenght = 0;
+    for (int i = 4- 1; i >= 0; i--) {
+        data_lenght |= (temp[i] & 0xff);
+        if (i != 0)
+            data_lenght  <<= 8;
+    }
+    // Receive data
+    char *data = new char[data_lenght];
+    int offset = 0;
+    int num_read = 0;
+    while (offset < data_lenght
+            && (num_read = read(sockfd, data, data_lenght)) >= 0) {
+        offset += num_read;
+    }
+
+    if (offset < data_lenght) {
+        cout << "ERROR: Can't receive all the data!" << endl;
         return NULL;
     }
-    return buffer;
+    return data;
 }
 
 void Tcp_client::close_connection(){
     close(sockfd);
+    cout << "Connection closed." << endl;
 }
 
 
@@ -66,3 +100,4 @@ Tcp_client::~Tcp_client()
 {
     //dtor
 }
+
