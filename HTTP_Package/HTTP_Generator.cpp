@@ -18,7 +18,7 @@ string HTTP_Generator::generate_get_request(string file_name ,string HTTP_type )
     return msg ;
 }
 
-string HTTP_Generator::generate_post_request(string file_name ,string HTTP_type , string file_type , char data[] )
+string HTTP_Generator::generate_post_request(string file_name ,string HTTP_type , string file_type , char *data )
 {
     string msg ("GET "+file_name+" "+HTTP_type+"\r\n");
     msg +="Host: "+get_host_name()+"\r\n";
@@ -26,7 +26,8 @@ string HTTP_Generator::generate_post_request(string file_name ,string HTTP_type 
     msg +="Accept-Language: "+get_accepted_language()+"\r\n";
     msg +="User-Agent: "+get_user_agent()+"\r\n";
     msg +="Content-Type: "+file_type+"\r\n";
-    msg +="Content-Lenght: "+to_string(sizeof(data))+"\r\n\n";
+    cout << sizeof(data)<<endl;
+    msg +="Content-Lenght: "+to_string(strlen(data)-1)+"\r\n\n";
     msg +=data;
 
     return msg ;

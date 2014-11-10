@@ -1,6 +1,8 @@
 #ifndef HTTP_GENERATOR_H
 #define HTTP_GENERATOR_H
 #include <string>
+#include <string.h>
+#include <iostream>
 
 using namespace std ;
 class HTTP_Generator
@@ -14,7 +16,7 @@ class HTTP_Generator
 
         HTTP_Generator();
         string generate_get_request (string file_name ,string HTTP_type );
-        string generate_post_request(string file_name ,string HTTP_type , string file_type , char data[] );
+        string generate_post_request(string file_name ,string HTTP_type , string file_type , char *data );
 
         string generate_get_response();
         string generate_post_response();
@@ -28,8 +30,5 @@ class HTTP_Generator
         string get_accepted_types();
 };
 
-    const string HTTP_Generator::HTTP1 = "HTTP/1.0" ;
-    const string HTTP_Generator::HTTP2 = "HTTP/1.1" ;
-    const string HTTP_Generator::image = "image/*"  ;
-    const string HTTP_Generator::txt   = "text/html";
+
 #endif // HTTP_GENERATOR_H
