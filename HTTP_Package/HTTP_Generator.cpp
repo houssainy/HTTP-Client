@@ -26,7 +26,6 @@ string HTTP_Generator::generate_post_request(string file_name ,string HTTP_type 
     msg +="Accept-Language: "+get_accepted_language()+"\r\n";
     msg +="User-Agent: "+get_user_agent()+"\r\n";
     msg +="Content-Type: "+file_type+"\r\n";
-    cout << sizeof(data)<<endl;
     msg +="Content-Lenght: "+to_string(strlen(data)-1)+"\r\n\n";
     msg +=data;
 
@@ -34,20 +33,31 @@ string HTTP_Generator::generate_post_request(string file_name ,string HTTP_type 
 }
 
 
-string HTTP_Generator::generate_get_response()
+string HTTP_Generator::generate_get_response(string HTTP_type ,string state ,string file_type , char *data)
 {
 
-    string msg ("");
+    string msg (HTTP_type+" "+state+"\r\n");
+    msg += "Data: "   +get_data();
+    msg += "Server: " +get_user_agent();
+    msg +="Content-Type: "+file_type+"\r\n";
+    msg +="Content-Lenght: "+to_string(strlen(data)-1)+"\r\n\n";
+    msg +=data;
+
 
     return msg ;
 
 }
 
 
-string HTTP_Generator::generate_post_response()
+string HTTP_Generator::generate_post_response( string HTTP_type ,string state ,string file_type )
 {
 
-    string msg ("");
+
+    string msg (HTTP_type+" "+state+"\r\n");
+    msg += "Data: "   +get_data();
+    msg += "Server: " +get_user_agent();
+    msg +="Content-Type: "+file_type+"\r\n";
+
 
     return msg ;
 
@@ -83,6 +93,15 @@ string HTTP_Generator::get_accepted_types()
     ///TODO get accepted files from system
 
     return ("*/*");
+
+}
+
+string HTTP_Generator::get_data()
+{
+
+    ///TODO get data from system
+
+    return ("Sun, 16 Nov 2014 12:10:12 GMT");
 
 }
 

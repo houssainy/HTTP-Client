@@ -13,20 +13,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-/*
-    if(argc < 3) {
-        cout << "Missing arguments!" << endl;
-        exit(EXIT_FAILURE);
-    }
-    int portNum = atoi(argv[2]);
-    Tcp_client tcp_client(portNum, argv[1]);
-    tcp_client.connect_to_server();
-    cout << "Connected to "<< argv[1] << " on port " << argv[2] << endl;
-    char msg[] = "Hello From client!";
-    tcp_client.send(msg, sizeof(msg));
-    cout << "Server: " << (char*)tcp_client.receive() << endl;
-    return 0;
-*/
+
     HTTP_Generator gen ;
     ifstream inFile;
 	size_t size = 0;
@@ -44,6 +31,7 @@ int main(int argc, char *argv[])
 		inFile.read(data, size);
 		data[size] = '\0';
 	}
+
 
     string msg = gen.generate_post_request("Ahmed",HTTP_Generator::HTTP2,HTTP_Generator::txt , data);
     cout << msg <<endl;
