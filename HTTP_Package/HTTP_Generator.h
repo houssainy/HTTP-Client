@@ -15,7 +15,6 @@ class HTTP_Generator
         const static string txt      ;
         const static string ok       ;
         const static string not_found;
-        const static string create   ;
 
         HTTP_Generator();
 
@@ -29,6 +28,7 @@ class HTTP_Generator
 
 
     private:
+
         string get_host_name ();
         string get_accepted_language ();
         string get_user_agent();

@@ -37,8 +37,8 @@ string HTTP_Generator::generate_get_response(string HTTP_type ,string state ,str
 {
 
     string msg (HTTP_type+" "+state+"\r\n");
-    msg += "Data: "   +get_data();
-    msg += "Server: " +get_user_agent();
+    msg += "Data: "   +get_data()+"\r\n";
+    msg += "Server: " +get_user_agent()+"\r\n";
     msg +="Content-Type: "+file_type+"\r\n";
     msg +="Content-Lenght: "+to_string(strlen(data)-1)+"\r\n\n";
     msg +=data;
@@ -54,8 +54,8 @@ string HTTP_Generator::generate_post_response( string HTTP_type ,string state ,s
 
 
     string msg (HTTP_type+" "+state+"\r\n");
-    msg += "Data: "   +get_data();
-    msg += "Server: " +get_user_agent();
+    msg += "Data: "   +get_data()+"\r\n";
+    msg += "Server: " +get_user_agent()+"\r\n";
     msg +="Content-Type: "+file_type+"\r\n";
 
 
