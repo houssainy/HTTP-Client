@@ -39,6 +39,7 @@ void Tcp_client::connect_to_server(){
         cout<< "Can't connect to server " << endl;
         exit(EXIT_FAILURE);
     }
+    cout << "Connected to server on port " << this->portnum << endl;
 }
 
 void Tcp_client::send(const void* buf, int length){
@@ -87,7 +88,6 @@ char* Tcp_client::receive(){
         cout << "ERROR: Can't receive all the data!" << endl;
         return NULL;
     }
-    cout << "****" << data << " Size=" << data_lenght<< endl;
     return data;
 }
 
