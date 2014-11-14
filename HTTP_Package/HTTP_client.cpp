@@ -32,4 +32,5 @@ void HTTP_client::connect() {
 HTTP_client::~HTTP_client()
 {
     //dtor
+    delete tcp_client;
 }
