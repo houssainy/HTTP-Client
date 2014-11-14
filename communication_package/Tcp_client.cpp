@@ -79,7 +79,7 @@ char* Tcp_client::receive(){
     int offset = 0;
     int num_read = 0;
     while (offset < data_lenght
-            && (num_read = read(sockfd, data, data_lenght)) >= 0) {
+            && (num_read = read(sockfd, data + offset, data_lenght - offset)) >= 0) {
         offset += num_read;
     }
 
@@ -87,6 +87,7 @@ char* Tcp_client::receive(){
         cout << "ERROR: Can't receive all the data!" << endl;
         return NULL;
     }
+    cout << "****" << data << " Size=" << data_lenght<< endl;
     return data;
 }
 
