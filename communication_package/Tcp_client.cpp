@@ -88,6 +88,7 @@ char* Tcp_client::receive(){
         cout << "ERROR: Can't receive all the data!" << endl;
         return NULL;
     }
+    cout << "****" << data << " Size=" << data_lenght<< endl;
     return data;
 }
 

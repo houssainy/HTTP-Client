@@ -36,6 +36,8 @@
 		</Compiler>
 		<Unit filename="HTTP_Package/HTTP_Generator.cpp" />
 		<Unit filename="HTTP_Package/HTTP_Generator.h" />
+		<Unit filename="HTTP_Package/HTTP_client.cpp" />
+		<Unit filename="HTTP_Package/HTTP_client.h" />
 		<Unit filename="communication_package/Tcp_client.cpp" />
 		<Unit filename="communication_package/Tcp_client.h" />
 		<Unit filename="main.cpp" />
