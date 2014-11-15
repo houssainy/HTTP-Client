@@ -9,8 +9,6 @@ HTTP_client::HTTP_client(int portNumber, char* host)
 void HTTP_client::connect() {
     tcp_client->connect_to_server();
 
-    // TODO(houssainy)
-
     string msg = HTTP_generator.generate_get_request("/ip" ,HTTP_Utils::HTTP1);
     tcp_client->send(msg.c_str() , msg.size());
 
