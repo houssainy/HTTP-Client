@@ -10,6 +10,6 @@ int main(int argc, char *argv[])
     }
 
     HTTP_client httpClient(atoi(argv[2]), argv[1]);
-    httpClient.connect();
+    httpClient.start();
     return 0;
 }
