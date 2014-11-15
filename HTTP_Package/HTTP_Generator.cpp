@@ -12,7 +12,7 @@ string HTTP_Generator::generate_get_request(string file_name ,string HTTP_type )
     msg += HTTP_Utils::HOST_NAME+":" + get_host_name() + "\r\n";
     msg += HTTP_Utils::ACCEPTED_FILES + ":" + get_accepted_types() + "\r\n";
     msg += HTTP_Utils::ACCEPTED_LANGUAGE +":" + get_accepted_language() + "\r\n";
-    msg += HTTP_Utils::USER_AGENT +":" + get_user_agent() + "\r\n";
+    msg += HTTP_Utils::USER_AGENT +":" + get_user_agent() + "\r\n\r\n";
     return msg ;
 }
 
@@ -54,7 +54,7 @@ string HTTP_Generator::generate_post_response( string HTTP_type ,string state ,s
 string HTTP_Generator::get_host_name ()
 {
     ///TODO get hostname
-    return ("MeGoFilio");
+    return ("httpbin.org");
 }
 
 string HTTP_Generator::get_accepted_language ()

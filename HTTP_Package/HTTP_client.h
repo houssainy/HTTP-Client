@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include "../communication_package/Tcp_client.h"
+#include "../dynamic_array_package/Dynamic_array.h"
+#include "HTTP_Generator.h"
+#include "HTTP_Parser.h"
 
 #include <fstream>
 #include <string>
@@ -17,6 +20,7 @@ class HTTP_client
         virtual ~HTTP_client();
     private:
         Tcp_client *tcp_client;
+        HTTP_Generator HTTP_generator ;
 };
 
 #endif // HTTP_CLIENT_H

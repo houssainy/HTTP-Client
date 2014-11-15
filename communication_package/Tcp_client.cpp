@@ -43,53 +43,19 @@ void Tcp_client::connect_to_server(){
 }
 
 void Tcp_client::send(const void* buf, int length){
-    // Send size of data
-    char data_size[4];
-    int arraySize = length;
-    // convert arraySize to byte array
-    for (int i = 0; i < 4; i++) {
-        data_size[i] = (char) (arraySize & 0xff);
-        arraySize >>= 8;
-    }
-    int n = write(sockfd, data_size, 4);
-    if (n < 0)
-        cout << "Error while sending data!" << endl;
-    // Send data
-    n = write(sockfd, buf, length);
+    int n = write(sockfd, buf, length);
     if (n < 0)
         cout << "Error while sending data!" << endl;
 }
 
-char* Tcp_client::receive(){
-    // Receive size
-    char temp[4];
+void Tcp_client::receive(Dynamic_array *data){
+    char buffer[256];
 
-    int n = read(sockfd, temp, 4);
-    if (n < 0)
-        cout << "ERROR in reading from data!" << endl;
-
-	// convert received size from byte array to integer
-    int data_lenght = 0;
-    for (int i = 4- 1; i >= 0; i--) {
-        data_lenght |= (temp[i] & 0xff);
-        if (i != 0)
-            data_lenght  <<= 8;
-    }
-    // Receive data
-    char *data = new char[data_lenght];
-    int offset = 0;
     int num_read = 0;
-    while (offset < data_lenght
-            && (num_read = read(sockfd, data + offset, data_lenght - offset)) >= 0) {
-        offset += num_read;
+    while ((num_read = read(sockfd, buffer, sizeof(buffer))) > 0) {
+        for(int i = 0; i < num_read; i++)
+            data->insert(buffer[i]);
     }
-
-    if (offset < data_lenght) {
-        cout << "ERROR: Can't receive all the data!" << endl;
-        return NULL;
-    }
-    cout << "****" << data << " Size=" << data_lenght<< endl;
-    return data;
 }
 
 void Tcp_client::close_connection(){

@@ -10,27 +10,21 @@ void HTTP_client::connect() {
     tcp_client->connect_to_server();
 
     // TODO(houssainy)
-    char msg[] = "Hello From client!";
-    tcp_client->send(msg, sizeof(msg));
 
-    char * z = tcp_client->receive();
-    cout<< "Received: " << z << endl;
+    string msg = HTTP_generator.generate_get_request("/ip" ,HTTP_Utils::HTTP1);
+    tcp_client->send(msg.c_str() , msg.size());
 
-    // Receive file
-    // Receive size
-    ofstream outfile;
-    outfile.open("example.jpg");
-    string line = "";
-    while((line = tcp_client->receive()) != "\0") {
-        outfile << line << endl;
+    Dynamic_array data;
+    tcp_client->receive(&data);
+    for(int i = 0; i < data.size(); i++) {
+        cout<< data.get_at(i);
     }
-
-    outfile.close();
-    tcp_client->close_connection();
+    cout << endl;
 }
 
 HTTP_client::~HTTP_client()
 {
     //dtor
+    tcp_client->close_connection();
     delete tcp_client;
 }
