@@ -1,7 +1,7 @@
 #ifndef DYNAMICARRAY_H
 #define DYNAMICARRAY_H
 
-
+using namespace std;
 class Dynamic_array
 {
     public:
@@ -17,12 +17,17 @@ class Dynamic_array
             if(last == array_size)
                 duplicate_size();
         };
+        void insert(string token){
+            for (int i = 0; i < token.size(); i++) {
+                insert(token[i]);
+            }
+        };
         char get_at(int i) {
             return array[i];
         };
-        ~Dynamic_array(){
-            delete array;
-        }
+        char *get_array() {
+            return array;
+        };
     private:
         char *array;
         int last = 0;

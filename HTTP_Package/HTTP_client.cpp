@@ -47,17 +47,27 @@ void HTTP_client::execute(string method_type, string file_path, string http_type
         // Receive response with data
         char buffer[256];
         Dynamic_array char_array ;
-        int num_read = 0;
+        int num_read = 0, offset = 0 ;
+        bool data_flag = false;
+        ofstream out_stream;
+        unordered_map <string, char *> values ;
         while ((num_read = read(sockfd, buffer, sizeof(buffer))) > 0) {
             for (int i=0 ; i< num_read ; i++)
             {
-                if (buffer[i]=='\r' && char_array.size()==0) {
-                    unordered_map <string, string> values ;
-                   // HTTP_parser.parse_msg(values,msg);
-                    //read_data(data_lenght);
-                    break;
+                if (i>0 && buffer[i]=='\r' && buffer[i-1] == '\n' && !data_flag) {
+                    i++;
+                     HTTP_parser.parse_msg(&values, char_array.get_array());
+                    data_flag = true;
+                    out_stream.open("text.txt");
+                } else if (data_flag){
+                    out_stream << buffer[i];
+                    offset++;
+                    if (offset == atoi(values[HTTP_Utils::CONTENT_LENGTH]))
+                        break;
+                    continue;
                 }
                 char_array.insert(buffer[i]);
+                cout<<buffer[i];
             }
         }
     } else if (method_type == HTTP_Utils::POST){
