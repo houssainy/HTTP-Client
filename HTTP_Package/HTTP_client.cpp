@@ -3,6 +3,8 @@
 HTTP_client::HTTP_client(int portnum, char* hostname)
 {
     //ctor
+    HTTP_generator = new HTTP_Generator(hostname);
+
     this->portnum = portnum ;
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
@@ -22,17 +24,51 @@ HTTP_client::HTTP_client(int portnum, char* hostname)
          (char *)&serv_addr.sin_addr.s_addr,
          server->h_length);
     serv_addr.sin_port = htons(portnum);
+
+
 }
 
 void HTTP_client::start() {
     connect_to_server();
+
+
 }
 
-void HTTP_client::execute(string method_type, string file_path, string http_type) {
+void HTTP_client::execute(string method_type, string file_path, string http_type  ) {
     if(method_type == HTTP_Utils::GET){
+        // Get request life cycle
+        // 1- send request without any data.
+        // 2- receive response with data
 
+        // Send request
+        string msg = HTTP_generator->generate_get_request(file_path, http_type);
+        send(msg.c_str(),msg.size());
+
+        // Receive response with data
+        char buffer[256];
+        Dynamic_array char_array ;
+        int num_read = 0;
+        while ((num_read = read(sockfd, buffer, sizeof(buffer))) > 0) {
+            for (int i=0 ; i< num_read ; i++)
+            {
+                if (buffer[i]=='\r' && char_array.size()==0) {
+                    unordered_map <string, string> values ;
+                   // HTTP_parser.parse_msg(values,msg);
+                    //read_data(data_lenght);
+                    break;
+                }
+                char_array.insert(buffer[i]);
+            }
+        }
     } else if (method_type == HTTP_Utils::POST){
+        //Post request life cycle:
+        // 1- send request with data.
+        // 2- receive respose without data.
 
+        // Send request
+        string msg = HTTP_generator->generate_get_request(file_path, http_type);
+        send(msg.c_str(),msg.size());
+        ///TODO read data
     }
 
 

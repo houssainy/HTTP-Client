@@ -10,8 +10,8 @@ unordered_map <string, string> HTTP_Parser::parse_msg(string msg)
 {
     vector <string> temp;
     unordered_map <string, string> values;
-
     istringstream ss (msg);
+
     string token;
     int line = 0;
     bool data_flag = false ;

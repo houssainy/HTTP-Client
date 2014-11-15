@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <unordered_map>
 
 #include <iostream>
 #include "../dynamic_array_package/Dynamic_array.h"
@@ -32,7 +33,8 @@ class HTTP_client
         struct sockaddr_in serv_addr;
         struct hostent *server;
 
-        HTTP_Generator HTTP_generator;
+        HTTP_Generator *HTTP_generator ;
+        HTTP_Parser HTTP_parser ;
         // Connect Method used to make client connect with server
         void connect_to_server();
         // Send method used to send data to server
