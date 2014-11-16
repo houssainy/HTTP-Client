@@ -43,6 +43,12 @@ class HTTP_client {
 
     void connect_to_server();
     void send(const void* buf, int length);
+
+    void exectue_get_request(string file_path, string http_type);
+    void exectue_post_request(string file_path, string http_type);
+
+    string get_file_type(string file_path);
+    string get_file_name(string file_path);
 };
 
 #endif // HTTP_CLIENT_H
