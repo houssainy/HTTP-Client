@@ -134,5 +134,4 @@ void HTTP_client::close_connection() {
 
 HTTP_client::~HTTP_client() {
   delete HTTP_generator;
-  delete server;
 }
