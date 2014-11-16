@@ -33,7 +33,6 @@ int main(int argc, char *argv[]) {
   getline(std::cin, input);
   do {
     parseInput(input, &result);
-    cout << result.size() << endl;
     if (result.size() < 3) {
         cout << "ERROR: Invalid input!" << endl;
         httpClient.close_connection();
