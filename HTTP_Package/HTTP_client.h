@@ -43,7 +43,6 @@ class HTTP_client {
 
     void connect_to_server();
     void send(const void* buf, int length);
-    void receive(Dynamic_array *data);
 };
 
 #endif // HTTP_CLIENT_H
