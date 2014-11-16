@@ -37,11 +37,12 @@ void HTTP_client::connect_to_server() {
     cout << "Connected to server on port " << this->portnum << endl;
 }
 
-void HTTP_client::execute(string method_type, string file_path, string http_type) {
+bool HTTP_client::execute(string method_type, string file_path, string http_type) {
     if (method_type == HTTP_Utils::GET)
       exectue_get_request(file_path, http_type);
     else if (method_type == HTTP_Utils::POST)
       exectue_post_request(file_path, http_type);
+    return http_type == HTTP_Utils::HTTP1 ? true : false;
 }
 
 void HTTP_client::exectue_get_request(string file_path, string http_type) {
@@ -88,7 +89,7 @@ void HTTP_client::exectue_post_request(string file_path, string http_type) {
       data.insert(c);
 
   // Send request
-  string msg = HTTP_generator->generate_post_request(file_path,http_type,file_type,data.size());
+  string msg = HTTP_generator->generate_post_request(get_file_name(file_path), http_type, file_type, data.size());
   send(msg.c_str(), msg.size());
   // send data
   send(data.get_array(), data.size());
@@ -98,14 +99,13 @@ void HTTP_client::exectue_post_request(string file_path, string http_type) {
   Dynamic_array char_array;
   int num_read = 0;
   while ((num_read = read(sockfd, buffer, sizeof(buffer))) > 0) {
-      for (int i=0 ; i< num_read ; i++)
-      {
-          if (i>0 && buffer[i]=='\r' && char_array.get_at(i-1) == '\n' ) {
-              HTTP_parser.parse_msg(&values, char_array.get_array());
-              return;
-          }
-          char_array.insert(buffer[i]);
+    for (int i=0 ; i< num_read ; i++) {
+      if (i>0 && buffer[i]=='\r' && char_array.get_at(i-1) == '\n' ) {
+        HTTP_parser.parse_msg(&values, char_array.get_array());
+        return;
       }
+      char_array.insert(buffer[i]);
+    }
   }
 }
 
