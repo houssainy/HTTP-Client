@@ -65,7 +65,7 @@ void HTTP_client::exectue_get_request(string file_path, string http_type) {
         HTTP_parser.parse_msg(&values, char_array.get_array());
         data_flag = true;
         if (values[HTTP_Utils::STATUS]==HTTP_Utils::NOT_FOUND){
-            cout<<"file not found !! :D"<<endl;
+            cout<<HTTP_Utils::NOT_FOUND <<endl;
             return;
         }
         out_stream.open(get_file_name(file_path));
