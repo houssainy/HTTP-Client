@@ -26,7 +26,7 @@ class HTTP_client
     public:
         HTTP_client(int portNumber, char* host);
         void start();
-        void execute(string method_type, string file_path, string http_type);
+        void execute(unordered_map<string, char *> *values,string method_type, string file_path, string http_type, string file_type );
         virtual ~HTTP_client();
     private:
         int sockfd, portnum;
@@ -39,8 +39,6 @@ class HTTP_client
         void connect_to_server();
         // Send method used to send data to server
         void send(const void* buf, int length);
-        // Receive method used to receive data from server
-        void receive(Dynamic_array *data);
         // close method used to close open connection with server
         void close_connection();
 };

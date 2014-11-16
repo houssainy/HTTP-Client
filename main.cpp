@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
     HTTP_client httpClient(atoi(argv[2]), argv[1]);
     httpClient.start();
-
-    httpClient.execute(HTTP_Utils::GET ,"ahmed" , HTTP_Utils::HTTP1);
+    unordered_map<string, char *> values;
+    httpClient.execute(&values,HTTP_Utils::GET ,"/ip" , HTTP_Utils::HTTP1 , NULL);
     return 0;
 }

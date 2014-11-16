@@ -34,12 +34,8 @@ void HTTP_client::start() {
 
 }
 
-void HTTP_client::execute(string method_type, string file_path, string http_type  ) {
+void HTTP_client::execute(unordered_map<string, char *> *values, string method_type, string file_path, string http_type, string file_type ) {
     if(method_type == HTTP_Utils::GET){
-        // Get request life cycle
-        // 1- send request without any data.
-        // 2- receive response with data
-
         // Send request
         string msg = HTTP_generator->generate_get_request(file_path, http_type);
         send(msg.c_str(),msg.size());
@@ -48,37 +44,59 @@ void HTTP_client::execute(string method_type, string file_path, string http_type
         char buffer[256];
         Dynamic_array char_array ;
         int num_read = 0, offset = 0 ;
-        bool data_flag = false;
+        bool data_flag = false, exit =false;
         ofstream out_stream;
-        unordered_map <string, char *> values ;
-        while ((num_read = read(sockfd, buffer, sizeof(buffer))) > 0) {
+        while (!exit && (num_read = read(sockfd, buffer, sizeof(buffer))) > 0) {
             for (int i=0 ; i< num_read ; i++)
             {
-                if (i>0 && buffer[i]=='\r' && buffer[i-1] == '\n' && !data_flag) {
+                if (i>0 && buffer[i]=='\r' && char_array.get_at(i-1) == '\n' && !data_flag) {
                     i++;
-                     HTTP_parser.parse_msg(&values, char_array.get_array());
+                    HTTP_parser.parse_msg(values, char_array.get_array());
                     data_flag = true;
                     out_stream.open("text.txt");
                 } else if (data_flag){
                     out_stream << buffer[i];
                     offset++;
-                    if (offset == atoi(values[HTTP_Utils::CONTENT_LENGTH]))
+                    if (offset == atoi(values->at(HTTP_Utils::CONTENT_LENGTH))){
+                        exit = true;
+                        out_stream.close();
                         break;
+                    }
                     continue;
                 }
                 char_array.insert(buffer[i]);
-                cout<<buffer[i];
             }
         }
     } else if (method_type == HTTP_Utils::POST){
-        //Post request life cycle:
-        // 1- send request with data.
-        // 2- receive respose without data.
+        //read data
+        Dynamic_array data ;
+        ifstream is ("test.txt");
+        char c;
+        while(is.get(c))
+            data.insert(c);
 
         // Send request
-        string msg = HTTP_generator->generate_get_request(file_path, http_type);
-        send(msg.c_str(),msg.size());
-        ///TODO read data
+        string msg = HTTP_generator->generate_post_request(file_path,http_type,file_type,data.size());
+        send(msg.c_str(), msg.size());
+        // send data
+        send(data.get_array(), data.size());
+
+        //receive response
+        char buffer[256];
+        Dynamic_array char_array;
+        int num_read = 0;
+        bool exit =false;
+        while (!exit && (num_read = read(sockfd, buffer, sizeof(buffer))) > 0) {
+            for (int i=0 ; i< num_read ; i++)
+            {
+                if (i>0 && buffer[i]=='\r' && char_array.get_at(i-1) == '\n' ) {
+                    HTTP_parser.parse_msg(values, char_array.get_array());
+                    exit = true;
+                    break;
+                }
+                char_array.insert(buffer[i]);
+            }
+        }
     }
 
 
@@ -101,16 +119,7 @@ void HTTP_client::send(const void* buf, int length)
         cout << "Error while sending data!" << endl;
 }
 
-void HTTP_client::receive(Dynamic_array *data)
-{
-    char buffer[256];
 
-    int num_read = 0;
-    while ((num_read = read(sockfd, buffer, sizeof(buffer))) > 0) {
-        for(int i = 0; i < num_read; i++)
-            data->insert(buffer[i]);
-    }
-}
 
 void HTTP_client::close_connection()
 {
