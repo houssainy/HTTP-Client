@@ -30,7 +30,7 @@ class HTTP_client {
   public:
     HTTP_client(int portNumber, char* host);
     void start();
-    void execute(string method_type, string file_path, string http_type);
+    bool execute(string method_type, string file_path, string http_type);
     void close_connection();
     virtual ~HTTP_client();
   private:
