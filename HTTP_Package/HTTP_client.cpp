@@ -42,11 +42,12 @@ bool HTTP_client::execute(string method_type, string file_path, string http_type
       exectue_get_request(file_path, http_type);
     else if (method_type == HTTP_Utils::POST)
       exectue_post_request(file_path, http_type);
-    return http_type == HTTP_Utils::HTTP1 ? true : false;
+    return http_type == HTTP_Utils::HTTP2 ? true : false;
 }
 
 void HTTP_client::exectue_get_request(string file_path, string http_type) {
   unordered_map<string, char *> values;
+
   // Send request
   string msg = HTTP_generator->generate_get_request(file_path, http_type);
   send(msg.c_str(),msg.size());
@@ -63,6 +64,10 @@ void HTTP_client::exectue_get_request(string file_path, string http_type) {
         i++;
         HTTP_parser.parse_msg(&values, char_array.get_array());
         data_flag = true;
+        if (values[HTTP_Utils::STATUS]==HTTP_Utils::NOT_FOUND){
+            cout<<"file not found !! :D"<<endl;
+            return;
+        }
         out_stream.open(get_file_name(file_path));
       } else if (data_flag) {
         out_stream << buffer[i];
@@ -74,6 +79,7 @@ void HTTP_client::exectue_get_request(string file_path, string http_type) {
         continue;
       }
       char_array.insert(buffer[i]);
+      cout<<buffer[i];
     }
   }
 }

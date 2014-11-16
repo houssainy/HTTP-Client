@@ -42,6 +42,7 @@ int main(int argc, char *argv[]) {
     	break;
     cout << "Enter your request:" << endl;
     getline(std::cin, input);
+    result.clear();
   } while(input != "exit");
 
   httpClient.close_connection();
