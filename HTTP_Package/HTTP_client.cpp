@@ -30,8 +30,6 @@ HTTP_client::HTTP_client(int portnum, char* hostname)
 
 void HTTP_client::start() {
     connect_to_server();
-
-
 }
 
 void HTTP_client::execute(string method_type, string file_path, string http_type  ) {
