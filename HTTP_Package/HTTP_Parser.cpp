@@ -51,6 +51,7 @@ void HTTP_Parser::parse_msg(unordered_map<string, char *> *values,char * msg) {
                 else
                     token->insert(msg[i]);
             }
+            i++;
         } else { // header
             token = new Dynamic_array();
             string key = "";

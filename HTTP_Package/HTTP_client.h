@@ -21,28 +21,29 @@
 
 using namespace std;
 
-class HTTP_client
-{
-    public:
-        HTTP_client(int portNumber, char* host);
-        void start();
-        void execute(string method_type, string file_path, string http_type);
-        virtual ~HTTP_client();
-    private:
-        int sockfd, portnum;
-        struct sockaddr_in serv_addr;
-        struct hostent *server;
+/**
+* This class is an ipmlementation for a simple HTTP Client.
+*
+* Using HTTP_client you can send GET request and POST request.
+*/
+class HTTP_client {
+  public:
+    HTTP_client(int portNumber, char* host);
+    void start();
+    void execute(string method_type, string file_path, string http_type);
+    void close_connection();
+    virtual ~HTTP_client();
+  private:
+    int sockfd, portnum;
+    struct sockaddr_in serv_addr;
+    struct hostent *server;
 
-        HTTP_Generator *HTTP_generator ;
-        HTTP_Parser HTTP_parser ;
-        // Connect Method used to make client connect with server
-        void connect_to_server();
-        // Send method used to send data to server
-        void send(const void* buf, int length);
-        // Receive method used to receive data from server
-        void receive(Dynamic_array *data);
-        // close method used to close open connection with server
-        void close_connection();
+    HTTP_Generator *HTTP_generator;
+    HTTP_Parser HTTP_parser;
+
+    void connect_to_server();
+    void send(const void* buf, int length);
+    void receive(Dynamic_array *data);
 };
 
 #endif // HTTP_CLIENT_H
